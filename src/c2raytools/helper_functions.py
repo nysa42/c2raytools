@@ -309,9 +309,12 @@ def get_data_and_type(indata, cbin_bits=32, cbin_order='c', raw_density=False):
 	'''
 	import c2raytools.density_file
 	import c2raytools.xfrac_file
+    import c2raytools.temper_file
 
 	if isinstance(indata, c2raytools.xfrac_file.XfracFile):
 		return indata.xi, 'xfrac'
+    elif isinstance(indata, c2raytools.temper_file.TemperFile):
+		return indata.temper, 'temper'
 	elif isinstance(indata, c2raytools.density_file.DensityFile):
 		if raw_density:
 			return indata.raw_density, 'density'
@@ -321,6 +324,8 @@ def get_data_and_type(indata, cbin_bits=32, cbin_order='c', raw_density=False):
 		filetype = determine_filetype(indata)
 		if filetype == 'xfrac':
 			return get_data_and_type(c2raytools.xfrac_file.XfracFile(indata))
+        elif filetype == 'temper':
+			return get_data_and_type(c2raytools.temper_file.TemperFile(indata))
 		elif filetype == 'density':
 			return get_data_and_type(c2raytools.density_file.DensityFile(indata))
 		elif filetype == 'cbin':
